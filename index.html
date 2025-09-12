@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Saathi - Government of Odisha Initiative</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ed4014  0%, #ff7700 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .logo i {
+            color: #1a73e8;
+            font-size: 24px;
+        }
+        
+        .header-content h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+        
+        .header-content p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+            background-color: white;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .chat-window {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9fafb;
+        }
+        
+        .message {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            background-color: #e6eeff;
+            border-bottom-left-radius: 5px;
+            align-self: flex-start;
+        }
+        
+        .user-message {
+            background-color: #1a73e8;
+            color: white;
+            border-bottom-right-radius: 5px;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .input-area {
+            display: flex;
+            padding: 15px;
+            background-color: white;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .input-area input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .input-area input:focus {
+            border-color: #1a73e8;
+        }
+        
+        .voice-btn {
+            background-color: #ee710b;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .voice-btn:hover {
+            background-color: #ec6008;
+        }
+        
+        .trending-queries {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f0f7ff;
+            border-radius: 10px;
+            border-left: 4px solid #ec7f0a;
+        }
+        
+        .trending-queries h3 {
+            margin-bottom: 10px;
+            color: #e07410;
+        }
+        
+        .query-list {
+            list-style-type: none;
+        }
+        
+        .query-list li {
+            padding: 8px 5px;
+            border-bottom: 1px dashed #ccc;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .query-list li:hover {
+            background-color: #e6eeff;
+        }
+        
+        .query-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .footer {
+            background-color: #e5750c;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .emergency {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .typing-indicator {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #e6eeff;
+            border-radius: 18px;
+        }
+        
+        .typing-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ff8800;
+            margin-right: 4px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .message {
+                max-width: 90%;
+            }
+            
+            .header-content h1 {
+                font-size: 20px;
+            }
+            
+            .header-content p {
+                font-size: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 12px 15px;
+            }
+            
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .chat-container {
+                margin: 10px;
+            }
+            
+            .input-area {
+                padding: 10px;
+            }
+            
+            .input-area input {
+                padding: 12px;
+            }
+        }
+        
+        .api-status {
+            padding: 8px 12px;
+            background-color: #ff9800;
+            color: white;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .api-status.error {
+            background-color: #f44336;
+        }
+        
+        .api-status.success {
+            background-color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="https://videos.openai.com/vg-assets/assets%2Ftask_01k4j1gbkbfhpsgq01vhg4cnfn%2F1757247274_img_1.webp?st=2025-09-07T10%3A39%3A28Z&se=2025-09-13T11%3A39%3A28Z&sks=b&skt=2025-09-07T10%3A39%3A28Z&ske=2025-09-13T11%3A39%3A28Z&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skoid=b4ab33b8-2ad4-40af-8ed0-a2b350b6603c&skv=2019-02-02&sv=2018-11-09&sr=b&sp=r&spr=https%2Chttp&sig=etuHNjeYSMsE5WBqLPk70upJLvrHMPmbtzRO7KfTmeM%3D&az=oaivgprodscus" alt="Health Saathi Logo" height="60" width="60">
+        </div>
+        <div class="header-content">
+            <h1>Health Saathi</h1>
+            <p>A Government of Odisha Initiative</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="chat-container">
+            <div class="chat-window" id="chatWindow">
+                <div class="api-status" id="apiStatus"></div>
+                <div class="message bot-message">
+                    Namaste! I am Health Saathi, your AI Health Assistant. How may I help you today?
+                </div>
+                <div class="trending-queries">
+                    <h3><i class="fas fa-fire"></i> Trending Health Queries</h3>
+                    <ul class="query-list">
+                        <li onclick="addQuery(this)">What are the symptoms of dengue?</li>
+                        <li onclick="addQuery(this)">How to prevent malaria?</li>
+                        <li onclick="addQuery(this)">Where can I get vaccinated?</li>
+                        <li onclick="addQuery(this)">Does garlic cure dengue?</li>
+                        <li onclick="addQuery(this)">What to do in case of heat stroke?</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Type your health question here..." onkeypress="handleKeyPress(event)">
+                <button class="voice-btn" id="voiceBtn">
+                    <i class="fas fa-microphone"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="privacy">
+            Your conversations are private and secure. <a href="#">Privacy Policy</a>
+        </div>
+        <div class="emergency">
+            In case of emergency, call 108 or 102
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const chatWindow = document.getElementById('chatWindow');
+        const userInput = document.getElementById('userInput');
+        const voiceBtn = document.getElementById('voiceBtn');
+        const apiStatus = document.getElementById('apiStatus');
+        
+        // Groq API Configuration
+        // ************************************************************
+        // ADD YOUR GROQ API KEY HERE (replace with your actual key)
+        // Get your API key from https://console.groq.com
+        const GROQ_API_KEY = "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";
+        const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+        const MODEL_NAME = "llama-3.1-8b-instant"; // Fast and capable model
+        // ************************************************************
+        
+        // Show API status message
+        function showApiStatus(message, isError = false) {
+            apiStatus.textContent = message;
+            apiStatus.className = 'api-status ' + (isError ? 'error' : 'success');
+            apiStatus.style.display = 'block';
+            
+            setTimeout(() => {
+                apiStatus.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Add message to chat
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.textContent = text;
+            chatWindow.appendChild(messageDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+        
+        // Show typing indicator
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'message bot-message typing-indicator';
+            typingDiv.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+            chatWindow.appendChild(typingDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+        
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        // Add trending query to input
+        function addQuery(element) {
+            userInput.value = element.textContent;
+            userInput.focus();
+        }
+        
+        // Handle key press (Enter key)
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        // Call Groq API
+        async function callGroqAPI(userMessage) {
+            try {
+                showTypingIndicator();
+                
+                // Check if API key is set
+                if (!GROQ_API_KEY || GROQ_API_KEY === "YOUR_GROQ_API_KEY_HERE") {
+                    throw new Error("API key not configured. Please add your Groq API key.");
+                }
+                
+                const response = await fetch(GROQ_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${GROQ_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: MODEL_NAME,
+                        messages: [
+                            {
+                                role: "system",
+                                content: `You are Health Saathi, an AI health assistant for the Government of Odisha. 
+                                Provide accurate, helpful health information in simple terms. 
+                                Debunk myths with facts. Be compassionate and professional. 
+                                Respond in plain text without markdown. Keep responses concise but informative.
+                                Focus on healthcare services available in Odisha.`
+                            },
+                            {
+                                role: "user",
+                                content: userMessage
+                            }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 1024,
+                        stream: false
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || `API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                hideTypingIndicator();
+                
+                if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+                    return data.choices[0].message.content;
+                } else {
+                    throw new Error("Invalid response format from API");
+                }
+                
+            } catch (error) {
+                console.error('Error calling Groq API:', error);
+                hideTypingIndicator();
+                
+                // Show specific error message
+                if (error.message.includes("API key")) {
+                    showApiStatus("Error: " + error.message, true);
+                    return "Please configure the Groq API key to use Health Saathi. Contact system administrator for assistance.";
+                } else if (error.message.includes("quota") || error.message.includes("limit")) {
+                    showApiStatus("API quota exceeded. Please try again later.", true);
+                    return "I'm currently experiencing high demand. Please try again in a few moments.";
+                } else if (error.message.includes("network") || error.message.includes("Internet")) {
+                    showApiStatus("Connection issue. Please check your internet connection.", true);
+                    return "I apologize, but I'm experiencing connection difficulties at the moment. Please try again shortly.";
+                } else {
+                    showApiStatus("Technical issue. Please try again.", true);
+                    return "I apologize, but I'm experiencing technical difficulties at the moment. Please try again shortly.";
+                }
+            }
+        }
+        
+        // Send message function
+        async function sendMessage() {
+            const message = userInput.value.trim();
+            if (message) {
+                addMessage(message, true);
+                userInput.value = '';
+                
+                // Call Groq API and get response
+                const response = await callGroqAPI(message);
+                addMessage(response);
+                
+                // Read response aloud if TTS is supported
+                if ('speechSynthesis' in window) {
+                    const speech = new SpeechSynthesisUtterance(response);
+                    speech.lang = 'en-IN';
+                    window.speechSynthesis.speak(speech);
+                }
+            }
+        }
+        
+        // Voice input functionality
+        let recognition;
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'en-IN';
+            
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                userInput.value = transcript;
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error', event.error);
+                addMessage("I couldn't hear you clearly. Please try again or type your question.", false);
+            };
+        } else {
+            voiceBtn.style.backgroundColor = '#ccc';
+            voiceBtn.title = 'Speech recognition not supported';
+        }
+        
+        voiceBtn.addEventListener('click', () => {
+            if (recognition) {
+                recognition.start();
+            } else {
+                addMessage("Speech recognition is not supported in your browser. Please type your question.", false);
+            }
+        });
+        
+        // Initial greeting with TTS
+        window.onload = function() {
+            if ('speechSynthesis' in window) {
+                const greeting = new SpeechSynthesisUtterance("Namaste! I am Health Saathi, your AI Health Assistant. How may I help you today?");
+                greeting.lang = 'en-IN';
+                window.speechSynthesis.speak(greeting);
+            }
+            
+            // Check if API key is configured
+            if (!GROQ_API_KEY || GROQ_API_KEY === "YOUR_GROQ_API_KEY_HERE") {
+                showApiStatus("Warning: API key not configured. Demo mode only.", true);
+            } else {
+                showApiStatus("Connected to Health Saathi AI Assistant", false);
+            }
+        };
+    </script>
+</body>
+</html>
